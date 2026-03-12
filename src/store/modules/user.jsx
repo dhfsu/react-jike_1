@@ -5,11 +5,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const userStore = createSlice({
     name: "user",
     initialState: {
-        token: "",
+        token: localStorage.getItem('token_key') || ""
     },
     reducers: {
         setToken(state, action) {
-            state.token = action.payload
+            state.token = action.payload //这行代码是存到了redux里
+            localStorage.setItem('token_key',action.payload) //这行是存到了本地
         }
     }
 })
