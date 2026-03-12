@@ -1,16 +1,16 @@
 import { request } from "@/utils/request";
 import { createSlice } from "@reduxjs/toolkit";
-
+import { setToken as _setToken,getToken as _getToken } from "@/utils/main";
 
 const userStore = createSlice({
     name: "user",
     initialState: {
-        token: localStorage.getItem('token_key') || ""
+        token: _getToken() || ""
     },
     reducers: {
         setToken(state, action) {
             state.token = action.payload //这行代码是存到了redux里
-            localStorage.setItem('token_key',action.payload) //这行是存到了本地
+            _setToken(token) //这行是存到了本地
         }
     }
 })
