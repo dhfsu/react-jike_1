@@ -10,7 +10,7 @@ const userStore = createSlice({
     reducers: {
         setToken(state, action) {
             state.token = action.payload //这行代码是存到了redux里
-            _setToken(token) //这行是存到了本地
+            _setToken(action.payload) //这行是存到了本地
         }
     }
 })
