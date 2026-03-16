@@ -15,22 +15,15 @@ import { Link } from 'react-router-dom'
 import './index.scss'
 import ReactQuill from 'react-quill-new'
 import 'react-quill-new/dist/quill.snow.css'
-import { useState, useEffect, use } from 'react'
-import { getChannelAPI } from '@/apis/article'
+import { useState } from 'react'
 import { createArticleAPI } from '@/apis/article'
+import { useChannel } from '@/hooks/useChannel'
 const { Option } = Select
 
 const Publish = () => {
-    const [channelList, setChannelList] = useState([])
 
-    const getChannelList = async () => {
-        const res = await getChannelAPI()
-        setChannelList(res.data.channels)
-    }
-    useEffect(() => {
-        getChannelList()
-    }, [])
-
+    const { channelList } = useChannel()
+    
     const onFinsh = (formValue) => {
         // 这里打印出来的key值和antd的Form.Item的name值是一致的
         // console.log(formValue)
