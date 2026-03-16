@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom'
 import './index.scss'
 import ReactQuill from 'react-quill-new'
 import 'react-quill-new/dist/quill.snow.css'
-import { useState,useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { getChannelAPI } from '@/apis/article'
 import { createArticleAPI } from '@/apis/article'
 const { Option } = Select
@@ -39,11 +39,22 @@ const Publish = () => {
             content,
             channel_id,
             cover: {
-                type:0,
-                images:[]
+                type: 0,
+                images: []
             }
         }
         createArticleAPI(reqData)
+    }
+    const [imageList, setImageList] = useState([])
+    const onUploadChange = (info) => {
+        console.log('正在上传中', info.fileList);
+
+        setImageList(info.fileList)
+    }
+    const [imageType, setImageType] = useState(0)
+    const onTypeChange = (e) => {
+        // console.log('切换封面了',e.target.value)
+        setImageType(e.target.value)
     }
     return (
         <div className="publish">
@@ -60,7 +71,7 @@ const Publish = () => {
                 <Form
                     labelCol={{ span: 4 }}
                     wrapperCol={{ span: 16 }}
-                    initialValues={{ type: 1 }}
+                    initialValues={{ type: 0 }}
                     onFinish={onFinsh}
                 >
                     <Form.Item
@@ -76,10 +87,28 @@ const Publish = () => {
                         rules={[{ required: true, message: '请选择文章频道' }]}
                     >
                         <Select placeholder="请选择文章频道" style={{ width: 400 }}>
-                            {channelList.map(item => 
-                                {return <Option  key={item.id} value={item.id}>{item.name}</Option>}
+                            {channelList.map(item => { return <Option key={item.id} value={item.id}>{item.name}</Option> }
                             )}
                         </Select>
+                    </Form.Item>
+                    <Form.Item label="封面">
+                        <Form.Item name="type">
+                            <Radio.Group onChange={onTypeChange}>
+                                <Radio value={1}>单图</Radio>
+                                <Radio value={3}>三图</Radio>
+                                <Radio value={0}>无图</Radio>
+                            </Radio.Group>
+                        </Form.Item>
+                        {imageType > 0 && <Upload
+                            listType="picture-card" //决定选择文件框的外观样式
+                            showUploadList          //控制显示的上传列表
+                            action={'http://geek.itheima.net/v1_0/upload'}
+                            onChange={onUploadChange}
+                        >
+                            <div style={{ marginTop: 8 }}>
+                                <PlusOutlined />
+                            </div>
+                        </Upload>}
                     </Form.Item>
                     <Form.Item
                         label="内容"
