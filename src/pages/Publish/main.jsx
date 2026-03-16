@@ -7,7 +7,8 @@ import {
     Input,
     Upload,
     Space,
-    Select
+    Select,
+    message
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -33,22 +34,22 @@ const Publish = () => {
     const onFinsh = (formValue) => {
         // 这里打印出来的key值和antd的Form.Item的name值是一致的
         // console.log(formValue)
+        if(imageList.length !== imageType) return message.warning('请上传正确数量的图片')
         const { title, channel_id, content } = formValue
         const reqData = {
             title,
             content,
             channel_id,
             cover: {
-                type: 0,
-                images: []
+                type: imageType,
+                images: imageList.map(item => item.response.data.url)
+
             }
         }
         createArticleAPI(reqData)
     }
     const [imageList, setImageList] = useState([])
     const onUploadChange = (info) => {
-        console.log('正在上传中', info.fileList);
-
         setImageList(info.fileList)
     }
     const [imageType, setImageType] = useState(0)
@@ -103,7 +104,9 @@ const Publish = () => {
                             listType="picture-card" //决定选择文件框的外观样式
                             showUploadList          //控制显示的上传列表
                             action={'http://geek.itheima.net/v1_0/upload'}
+                            name='image'
                             onChange={onUploadChange}
+                            maxCount={imageType}
                         >
                             <div style={{ marginTop: 8 }}>
                                 <PlusOutlined />
