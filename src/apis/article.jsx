@@ -33,3 +33,9 @@ export function deleteArticleAPI(id) {
         method: 'DELETE',  //请求的方式
     })
 }
+
+export function getArticleById(id) {
+    return request({
+        url: `/mp/articles/${id}`
+    })
+}
