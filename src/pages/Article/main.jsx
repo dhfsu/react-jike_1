@@ -78,8 +78,13 @@ const Article = () => {
         begin_pubdate: '',
         end_pubdate: '',
         page: 1,
-        page_size: 5
+        per_page: 5
     })
+    //点击分页
+    const onPageChange = (page) => {
+        console.log(page)
+        setReqData({...reqData, page})    
+    }
     // 表单提交
     const onFinish = (formValue) => {
         console.log(formValue)
@@ -144,7 +149,11 @@ const Article = () => {
                 </Form>
             </Card>
             <Card title={`根据筛选条件共查询到 ${count} 条结果：`}>
-                <Table rowKey="id" columns={columns} dataSource={list} />
+                <Table rowKey="id" columns={columns} dataSource={list} pagination={{ 
+                    total: count,
+                    pageSize: reqData.per_page ,
+                    onChange: onPageChange}}
+                    />
             </Card>
         </div>
     )
