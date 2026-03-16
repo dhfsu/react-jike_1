@@ -71,17 +71,37 @@ const Article = () => {
             }
         }
     ]
+    //准备完成的请求参数对象
+    const[reqData,setReqData] = useState({
+        status: '',
+        channel_id: '',
+        begin_pubdate: '',
+        end_pubdate: '',
+        page: 1,
+        page_size: 5
+    })
+    // 表单提交
+    const onFinish = (formValue) => {
+        console.log(formValue)
+        setReqData({
+            ...reqData,
+            status: formValue.status,
+            channel_id: formValue.channel_id,
+            begin_pubdate: formValue.date[0].format('YYYY-MM-DD'),
+            end_pubdate: formValue.date[1].format('YYYY-MM-DD')
+        })
+    }
     const [count,setCount] = useState(0)
 
     const [list,setList] = useState([])
     useEffect(() => {
         async function getList() {
-        const res = await getArticleListAPI() 
+        const res = await getArticleListAPI(reqData) 
         setList(res.data.results)
         setCount(res.data.total_count)
         }
         getList()
-    }, [])
+    }, [reqData])
     return (
         <div>
             <Card
@@ -93,7 +113,7 @@ const Article = () => {
                 }
                 style={{ marginBottom: 20 }}
             >
-                <Form initialValues={{ status: '' ,channel_id: '推荐'}}>
+                <Form initialValues={{ status: '' ,channel_id: '推荐'}} onFinish={onFinish}>
                     <Form.Item label="状态" name="status">
                         <Radio.Group>
                             <Radio value={''}>全部</Radio>
