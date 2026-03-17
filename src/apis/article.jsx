@@ -19,6 +19,15 @@ export function createArticleAPI(data) {
 }
 //获取文章列表
 
+//更新文章表单
+export function updateArticleAPI(data) {
+    return request({
+        url: `/mp/articles/${data.id}?draft=false`,
+        method: 'PUT',  //请求的方式
+        data
+    })
+}
+
 export function getArticleListAPI(params) {
     return request({
         url:'/mp/articles',
