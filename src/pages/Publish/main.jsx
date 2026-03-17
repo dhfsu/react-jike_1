@@ -16,18 +16,18 @@ import './index.scss'
 import ReactQuill from 'react-quill-new'
 import 'react-quill-new/dist/quill.snow.css'
 import { useEffect, useState } from 'react'
-import { createArticleAPI,getArticleById } from '@/apis/article'
+import { createArticleAPI, getArticleById } from '@/apis/article'
 import { useChannel } from '@/hooks/useChannel'
 const { Option } = Select
 
 const Publish = () => {
 
     const { channelList } = useChannel()
-    
+
     const onFinsh = (formValue) => {
         // 这里打印出来的key值和antd的Form.Item的name值是一致的
         // console.log(formValue)
-        if(imageList.length !== imageType) return message.warning('请上传正确数量的图片')
+        if (imageList.length !== imageType) return message.warning('请上传正确数量的图片')
         const { title, channel_id, content } = formValue
         const reqData = {
             title,
@@ -59,15 +59,19 @@ const Publish = () => {
         async function getArticleDetail() {
             const res = await getArticleById(articleId)
             console.log('res', res.data)
-            form.setFieldsValue({...res.data,
+            form.setFieldsValue({
+                ...res.data,
                 type: res.data.cover.type,
                 images: res.data.cover.images
             })
             setImageType(res.data.cover.type)
-            setImageList(res.data.cover.images.map(url => {return {url}}))
+            setImageList(res.data.cover.images.map(url => { return { url } }))
         }
-        getArticleDetail()
-    }, [articleId,form])   
+        //只有回传的时候才会触发
+        if (articleId) {
+            getArticleDetail()
+        }
+    }, [articleId, form])
 
     return (
         <div className="publish">
@@ -76,7 +80,7 @@ const Publish = () => {
                     // 面包屑导航
                     <Breadcrumb items={[
                         { title: <Link to={'/'}>首页</Link> },
-                        { title: '发布文章' },
+                        { title: `${articleId ? '编辑' : '发布'}文章` },
                     ]}
                     />
                 }
