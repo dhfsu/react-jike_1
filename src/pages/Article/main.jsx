@@ -84,7 +84,7 @@ const Article = () => {
     ]
     // 弹窗确认删除
     const onConfirm = async(data) => {
-        console.log(data)
+        // console.log(data)
         await deleteArticleAPI(data.id)
         setReqData({
             ...reqData
@@ -101,12 +101,12 @@ const Article = () => {
     })
     //点击分页
     const onPageChange = (page) => {
-        console.log(page)
+        // console.log(page)
         setReqData({ ...reqData, page })
     }
     // 表单提交
     const onFinish = (formValue) => {
-        console.log(formValue)
+        // console.log(formValue)
         setReqData({
             ...reqData,
             status: formValue.status,

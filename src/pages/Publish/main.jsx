@@ -65,11 +65,11 @@ const Publish = () => {
     const [searchParams] = useSearchParams()
     const articleId = searchParams.get('id')
     const [form] = Form.useForm()
-    console.log('articleId', articleId)
+    // console.log('articleId', articleId)
     useEffect(() => {
         async function getArticleDetail() {
             const res = await getArticleById(articleId)
-            console.log('res', res.data)
+            // console.log('res', res.data)
             form.setFieldsValue({
                 ...res.data,
                 type: res.data.cover.type,
